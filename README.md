@@ -56,7 +56,9 @@ Este projeto foi desenvolvido como parte do meu percurso de transição para a �
 
 ### Gráficos e insights
 
-![Gráficos e insights](assets/grafico.png) (assets/grafico1.png) ((assets/grafico2.png)
+![Gráficos e insights](assets/grafico.png)
+(assets/grafico1.png)
+(assets/grafico2.png)
 
 ## Estrutura do projeto
 
