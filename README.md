@@ -66,3 +66,17 @@ M.A.I.A/
 ├── data/
 ├── assets/
 └── reports/
+
+## Screenshots
+
+### Página inicial
+
+![Página inicial](assets/intro.png)
+
+### Resumo executivo
+
+![Resumo executivo](assets/summary.png)
+
+### Gráficos e insights
+
+![Gráficos e insights](assets/grafico.png) (assets/grafico1.png) ((assets/grafico2.png)
