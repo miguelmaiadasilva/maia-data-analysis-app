@@ -44,6 +44,19 @@ Este projeto foi desenvolvido como parte do meu percurso de transição para a �
 - matplotlib
 - seaborn
 - openpyxl
+ ## Screenshots
+
+### Página inicial
+
+![Página inicial](assets/intro.png)
+
+### Resumo executivo
+
+![Resumo executivo](assets/summary.png)
+
+### Gráficos e insights
+
+![Gráficos e insights](assets/grafico.png) (assets/grafico1.png) ((assets/grafico2.png)
 
 ## Estrutura do projeto
 
@@ -67,16 +80,4 @@ M.A.I.A/
 ├── assets/
 └── reports/
 
-## Screenshots
 
-### Página inicial
-
-![Página inicial](assets/intro.png)
-
-### Resumo executivo
-
-![Resumo executivo](assets/summary.png)
-
-### Gráficos e insights
-
-![Gráficos e insights](assets/grafico.png) (assets/grafico1.png) ((assets/grafico2.png)
