@@ -52,11 +52,11 @@ Este projeto foi desenvolvido como parte do meu percurso de transição para a �
 
 ### Resumo executivo
 
-![Resumo executivo](assets/summary.png)
+![Resumo executivo](assets/sum.png)
 
 ### Gráficos e insights
 
-![Gráfico 1](assets/grafico.png)
+![Gráfico 1](assets/gra.png)
 
 ![Gráfico 2](assets/grafico1.png)
 
