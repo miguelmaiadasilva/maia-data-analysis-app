@@ -7,19 +7,19 @@ def validate_dataframe(df):
     """
 
     if df.empty:
-        raise ValueError("O ficheiro foi carregado, mas não contém dados.")
+        raise ValueError("The file was loaded, but it does not contain any data.")
 
     if df.shape[1] == 0:
-        raise ValueError("O dataset não contém colunas.")
+        raise ValueError("The dataset does not contain any columns.")
 
     if df.shape[1] == 1:
         raise ValueError(
-            "O dataset tem apenas uma coluna. Verifica se o separador do CSV está correto."
+            "The dataset has only one column. Check whether the CSV delimiter is correct."
         )
 
     if df.shape[0] < 3:
         raise ValueError(
-            "O dataset tem muito poucas linhas para uma análise exploratória útil."
+            "The dataset has too few rows for a useful exploratory analysis."
         )
 
 
@@ -44,7 +44,7 @@ def load_csv_with_fallback(uploaded_file):
         except UnicodeDecodeError:
             continue
 
-    raise ValueError("Não foi possível ler o CSV. Verifica o encoding do ficheiro.")
+    raise ValueError("The CSV could not be read. Check the file encoding.")
 
 
 def get_excel_sheets(uploaded_file):
@@ -71,7 +71,7 @@ def load_file(uploaded_file, sheet_name=None):
         df = pd.read_excel(uploaded_file, sheet_name=sheet_name)
 
     else:
-        raise ValueError("Formato de ficheiro não suportado.")
+        raise ValueError("Unsupported file format.")
 
     validate_dataframe(df)
 

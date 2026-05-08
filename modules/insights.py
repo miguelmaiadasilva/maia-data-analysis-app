@@ -6,7 +6,7 @@ def generate_numeric_insight(df, column):
     data = df[column].dropna()
 
     if data.empty:
-        return f"A coluna '{column}' não tem dados suficientes para análise."
+        return f"The column '{column}' does not have enough data for analysis."
 
     mean_value = data.mean()
     median_value = data.median()
@@ -15,21 +15,21 @@ def generate_numeric_insight(df, column):
     outlier_count = detect_outliers(df, column)
 
     insight = (
-        f"A coluna '{column}' apresenta uma média de {mean_value:.2f} "
-        f"e uma mediana de {median_value:.2f}. "
-        f"Os valores variam entre {min_value:.2f} e {max_value:.2f}."
+        f"The column '{column}' has a mean of {mean_value:.2f} "
+        f"and a median of {median_value:.2f}. "
+        f"Values range from {min_value:.2f} to {max_value:.2f}."
     )
 
     if mean_value > median_value:
-        insight += " A média é superior à mediana, o que pode indicar valores altos a puxar a média para cima."
+        insight += " The mean is higher than the median, which may indicate high values pulling the average upward."
     elif mean_value < median_value:
-        insight += " A média é inferior à mediana, o que pode indicar valores baixos a influenciar a distribuição."
+        insight += " The mean is lower than the median, which may indicate low values influencing the distribution."
     else:
-        insight += " A média e a mediana são iguais, sugerindo uma distribuição mais equilibrada."
+        insight += " The mean and median are equal, suggesting a more balanced distribution."
     
     if outlier_count > 0:
         insight += (
-        f" Foram encontrados {outlier_count} possíveis outliers nesta coluna."
+        f" {outlier_count} potential outliers were found in this column."
     )
 
     return insight
@@ -43,7 +43,7 @@ def generate_categorical_insight(df, column):
     data = df[column].dropna()
 
     if data.empty:
-        return f"A coluna '{column}' não tem dados suficientes para análise."
+        return f"The column '{column}' does not have enough data for analysis."
 
     counts = data.value_counts()
     top_category = counts.index[0]
@@ -53,17 +53,17 @@ def generate_categorical_insight(df, column):
     unique_values = data.nunique()
 
     insight = (
-        f"A coluna '{column}' tem {unique_values} categorias diferentes. "
-        f"A categoria mais frequente é '{top_category}', com {top_count} ocorrências, "
-        f"representando {top_percentage:.2f}% dos registos válidos."
+        f"The column '{column}' has {unique_values} distinct categories. "
+        f"The most frequent category is '{top_category}', with {top_count} occurrences, "
+        f"representing {top_percentage:.2f}% of valid records."
     )
 
     if top_percentage > 70:
-        insight += " Esta coluna está muito concentrada numa única categoria."
+        insight += " This column is highly concentrated in a single category."
     elif top_percentage > 40:
-        insight += " Existe alguma concentração na categoria principal."
+        insight += " There is some concentration in the leading category."
     else:
-        insight += " A distribuição parece relativamente mais equilibrada entre categorias."
+        insight += " The distribution appears relatively balanced across categories."
 
     return insight
 
@@ -107,25 +107,25 @@ def generate_executive_summary(df):
 
     # Visão geral
     summary.append(
-        f"O dataset contém {num_rows} registos e {num_columns} variáveis, "
-        f"permitindo uma análise exploratória inicial da informação disponível."
+        f"The dataset contains {num_rows} records and {num_columns} variables, "
+        f"supporting an initial exploratory analysis of the available information."
     )
 
     # Perfil do dataset
     if len(numeric_columns) > len(categorical_columns):
         summary.append(
-            "O dataset tem predominância de variáveis numéricas, o que favorece análises estatísticas, "
-            "distribuições, dispersão e identificação de possíveis outliers."
+            "The dataset is mostly composed of numeric variables, which supports statistical analysis, "
+            "distribution review, dispersion analysis and potential outlier detection."
         )
     elif len(categorical_columns) > len(numeric_columns):
         summary.append(
-            "O dataset tem predominância de variáveis categóricas, sendo mais adequado para análises de frequência, "
-            "segmentação e comparação entre grupos."
+            "The dataset is mostly composed of categorical variables, making it suitable for frequency analysis, "
+            "segmentation and comparisons between groups."
         )
     else:
         summary.append(
-            "O dataset apresenta equilíbrio entre variáveis numéricas e categóricas, permitindo combinar análise estatística "
-            "com análise de segmentos."
+            "The dataset has a balanced mix of numeric and categorical variables, allowing statistical analysis "
+            "to be combined with segment-level analysis."
         )
 
     # Qualidade geral
@@ -134,30 +134,30 @@ def generate_executive_summary(df):
 
     if missing_total == 0 and duplicated_rows == 0:
         summary.append(
-            "A qualidade geral dos dados parece positiva, sem valores em falta ou duplicados evidentes."
+            "Overall data quality appears positive, with no evident missing values or duplicate records."
         )
     else:
         summary.append(
-            "A qualidade dos dados requer validação antes de uma análise final, pois foram detetados sinais de possíveis inconsistências."
+            "Data quality should be validated before final analysis, as potential consistency issues were detected."
         )
 
     # Potencial analítico
     if len(numeric_columns) > 0 and len(categorical_columns) > 0:
         summary.append(
-            "Existe potencial para cruzar variáveis numéricas com categorias, permitindo identificar padrões por grupo, localização ou perfil."
+            "There is potential to cross numeric variables with categories, helping identify patterns by group, location or profile."
         )
     elif len(numeric_columns) > 0:
         summary.append(
-            "O dataset permite sobretudo análise quantitativa, como estatísticas descritivas, dispersão e comparação de valores."
+            "The dataset primarily supports quantitative analysis, such as descriptive statistics, dispersion and value comparison."
         )
     elif len(categorical_columns) > 0:
         summary.append(
-            "O dataset permite sobretudo análise qualitativa ou de segmentação, baseada na frequência das categorias."
+            "The dataset primarily supports qualitative or segmentation analysis based on category frequencies."
         )
 
     # Próximo passo recomendado
     summary.append(
-        "Antes de retirar conclusões definitivas, recomenda-se validar valores em falta, zeros suspeitos, duplicados e possíveis outliers."
+        "Before drawing final conclusions, missing values, suspicious zeros, duplicates and potential outliers should be validated."
     )
 
     return summary
@@ -173,7 +173,7 @@ def generate_correlation_insights(df):
 
     # Verificar se existem pelo menos 2 colunas numéricas
     if numeric_df.shape[1] < 2:
-        return ["Não existem colunas numéricas suficientes para análise de correlação."]
+        return ["There are not enough numeric columns for correlation analysis."]
 
     correlation_matrix = numeric_df.corr()
 
@@ -198,23 +198,23 @@ def generate_correlation_insights(df):
 
                         if corr_value > 0:
                             insights.append(
-                                f"Foi encontrada forte correlação positiva entre '{col1}' e '{col2}' ({corr_value:.2f})."
+                                f"A strong positive correlation was found between '{col1}' and '{col2}' ({corr_value:.2f})."
                             )
 
                         else:
                             insights.append(
-                                f"Foi encontrada forte correlação negativa entre '{col1}' e '{col2}' ({corr_value:.2f})."
+                                f"A strong negative correlation was found between '{col1}' and '{col2}' ({corr_value:.2f})."
                             )
 
                     elif abs_corr >= 0.4:
 
                         insights.append(
-                            f"As variáveis '{col1}' e '{col2}' apresentam correlação moderada ({corr_value:.2f})."
+                            f"The variables '{col1}' and '{col2}' show a moderate correlation ({corr_value:.2f})."
                         )
 
     if not insights:
         insights.append(
-            "Não foram encontradas correlações fortes ou moderadas entre as variáveis numéricas."
+            "No strong or moderate correlations were found between the numeric variables."
         )
 
     return insights

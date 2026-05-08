@@ -92,41 +92,41 @@ def get_visualization_recommendation(df, column):
     if analysis["is_datetime"]:
         return {
             "can_plot": False,
-            "reason": "Esta coluna representa datas. A análise temporal será adicionada numa próxima versão.",
+            "reason": "This column represents dates. Time-based analysis will be added in a future version.",
             "chart_type": None
         }
 
     if analysis["is_probable_id"]:
         return {
             "can_plot": False,
-            "reason": "Esta coluna parece representar identificadores únicos e não é adequada para visualização estatística.",
+            "reason": "This column appears to represent unique identifiers and is not suitable for statistical visualization.",
             "chart_type": None
         }
 
     if analysis["is_constant"]:
         return {
             "can_plot": False,
-            "reason": "Esta coluna tem sempre o mesmo valor, por isso não apresenta variabilidade para análise gráfica.",
+            "reason": "This column always has the same value, so it does not provide variability for chart analysis.",
             "chart_type": None
         }
 
     if analysis["high_cardinality"] and not analysis["is_numeric"]:
         return {
             "can_plot": False,
-            "reason": "Esta coluna tem demasiadas categorias para uma visualização de barras útil.",
+            "reason": "This column has too many categories for a useful bar chart.",
             "chart_type": None
         }
 
     if analysis["is_numeric"]:
         return {
             "can_plot": True,
-            "reason": "Coluna numérica adequada para histograma e boxplot.",
+            "reason": "Numeric column suitable for a histogram and boxplot.",
             "chart_type": "numeric"
         }
 
     return {
         "can_plot": True,
-        "reason": "Coluna categórica adequada para gráfico de barras.",
+        "reason": "Categorical column suitable for a bar chart.",
         "chart_type": "categorical"
     }
 
@@ -141,15 +141,15 @@ def create_column_profile_table(df):
 
     for analysis in column_analysis:
         profile_data.append({
-            "Coluna": analysis["column_name"],
-            "Tipo": analysis["dtype"],
-            "Valores únicos": analysis["unique_values"],
-            "Valores em falta": analysis["missing_values"],
-            "Numérica": "Sim" if analysis["is_numeric"] else "Não",
-            "Data": "Sim" if analysis["is_datetime"] else "Não",
-            "Provável ID": "Sim" if analysis["is_probable_id"] else "Não",
-            "Alta cardinalidade": "Sim" if analysis["high_cardinality"] else "Não",
-            "Constante": "Sim" if analysis["is_constant"] else "Não"
+            "Column": analysis["column_name"],
+            "Type": analysis["dtype"],
+            "Unique values": analysis["unique_values"],
+            "Missing values": analysis["missing_values"],
+            "Numeric": "Yes" if analysis["is_numeric"] else "No",
+            "Date": "Yes" if analysis["is_datetime"] else "No",
+            "Probable ID": "Yes" if analysis["is_probable_id"] else "No",
+            "High cardinality": "Yes" if analysis["high_cardinality"] else "No",
+            "Constant": "Yes" if analysis["is_constant"] else "No"
         })
 
     return pd.DataFrame(profile_data)

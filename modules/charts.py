@@ -20,13 +20,13 @@ def create_histogram(df, column):
     )
 
     ax.set_title(
-        f"Distribuição de {column}",
+        f"Distribution of {column}",
         fontsize=18,
         fontweight="bold"
     )
 
     ax.set_xlabel(column, fontsize=12)
-    ax.set_ylabel("Frequência", fontsize=12)
+    ax.set_ylabel("Frequency", fontsize=12)
 
     ax.grid(True, linestyle="--", alpha=0.5)
 
@@ -50,13 +50,13 @@ def create_bar_chart(df, column):
     )
 
     ax.set_title(
-        f"Top categorias de {column}",
+        f"Top categories for {column}",
         fontsize=18,
         fontweight="bold"
     )
 
     ax.set_xlabel(column, fontsize=12)
-    ax.set_ylabel("Contagem", fontsize=12)
+    ax.set_ylabel("Count", fontsize=12)
 
     ax.grid(True, axis="y", linestyle="--", alpha=0.5)
 
@@ -88,7 +88,7 @@ def create_correlation_heatmap(df):
     )
 
     ax.set_title(
-        "Heatmap de Correlação",
+        "Correlation Heatmap",
         fontsize=18,
         fontweight="bold"
     )
@@ -111,7 +111,7 @@ def create_boxplot(df, column):
     )
 
     ax.set_title(
-        f"Boxplot de {column}",
+        f"Boxplot of {column}",
         fontsize=18,
         fontweight="bold"
     )

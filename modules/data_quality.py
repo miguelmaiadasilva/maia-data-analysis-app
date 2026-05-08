@@ -69,17 +69,17 @@ def generate_data_quality_alerts(df):
             if perc > 50:
                 alerts.append({
                     "level": "critical",
-                    "message": f"A coluna '{col}' tem {count} valores em falta ({perc:.2f}%). Situação crítica."
+                    "message": f"The column '{col}' has {count} missing values ({perc:.2f}%). Critical issue."
                 })
             elif perc > 20:
                 alerts.append({
                     "level": "warning",
-                    "message": f"A coluna '{col}' tem {count} valores em falta ({perc:.2f}%). Requer atenção."
+                    "message": f"The column '{col}' has {count} missing values ({perc:.2f}%). Requires attention."
                 })
             else:
                 alerts.append({
                     "level": "info",
-                    "message": f"A coluna '{col}' tem {count} valores em falta ({perc:.2f}%). Impacto aparentemente baixo."
+                    "message": f"The column '{col}' has {count} missing values ({perc:.2f}%). Impact appears low."
                 })
 
     # Valores zero
@@ -95,17 +95,17 @@ def generate_data_quality_alerts(df):
             if perc > 50:
                 alerts.append({
                     "level": "critical",
-                    "message": f"A coluna '{col}' tem {count} valores iguais a 0 ({perc:.2f}%). Situação crítica."
+                    "message": f"The column '{col}' has {count} values equal to 0 ({perc:.2f}%). Critical issue."
                 })
             elif perc > 20:
                 alerts.append({
                     "level": "warning",
-                    "message": f"A coluna '{col}' tem {count} valores iguais a 0 ({perc:.2f}%). Requer atenção."
+                    "message": f"The column '{col}' has {count} values equal to 0 ({perc:.2f}%). Requires attention."
                 })
             else:
                 alerts.append({
                     "level": "info",
-                    "message": f"A coluna '{col}' tem {count} valores iguais a 0 ({perc:.2f}%). Pode ser normal ou requer validação."
+                    "message": f"The column '{col}' has {count} values equal to 0 ({perc:.2f}%). This may be normal or may require validation."
                 })
 
     # Duplicados
@@ -114,7 +114,7 @@ def generate_data_quality_alerts(df):
     if duplicated_rows > 0:
         alerts.append({
             "level": "warning",
-            "message": f"Existem {duplicated_rows} linhas envolvidas em duplicados no dataset."
+            "message": f"There are {duplicated_rows} rows involved in duplicates in the dataset."
         })
 
     return alerts
@@ -136,10 +136,10 @@ def create_data_quality_table(df):
     for column in df.columns:
 
         quality_data.append({
-            "Coluna": column,
-            "Valores em falta": int(missing_count[column]),
-            "% em falta": round(missing_percentage[column], 2),
-            "Valores zero": int(zero_count[column]) if column in zero_count else 0,
+            "Column": column,
+            "Missing values": int(missing_count[column]),
+            "% missing": round(missing_percentage[column], 2),
+            "Zero values": int(zero_count[column]) if column in zero_count else 0,
             "% zero": round(zero_percentage[column], 2) if column in zero_percentage else 0
         })
 
