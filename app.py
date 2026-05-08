@@ -1,11 +1,19 @@
 import streamlit as st
-import pandas as pd
 from modules.file_loader import load_file, get_excel_sheets
 from modules.eda import get_dataset_overview, get_numeric_statistics
 from modules.data_quality import  get_duplicated_rows, generate_data_quality_alerts, create_data_quality_table
 from modules.charts import create_histogram, create_bar_chart, create_correlation_heatmap, create_boxplot
 from modules.insights import generate_numeric_insight, generate_categorical_insight, generate_executive_summary, generate_correlation_insights, generate_dataset_kpis
 from modules.column_intelligence import get_visualization_recommendation, create_column_profile_table
+from modules.ui_components import (
+    render_empty_state,
+    render_executive_summary,
+    render_global_styles,
+    render_header,
+    render_kpi_overview,
+    render_sidebar_details,
+    render_sidebar_intro,
+)
 
 st.set_page_config(
     page_title="M.A.I.A.",
@@ -13,119 +21,98 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("M.A.I.A. — Miguel Artificial Intelligence Analyst")
-st.markdown(
-    "Ferramenta de análise exploratória automática para datasets CSV e Excel, "
-    "com foco em qualidade dos dados, visualizações e insights em linguagem natural."
-)
-
-st.sidebar.title("M.A.I.A.")
-st.sidebar.caption("Miguel Artificial Intelligence Analyst")
-st.sidebar.write("Carrega um ficheiro CSV ou Excel para iniciar a análise.")
+render_global_styles()
+render_header()
+render_sidebar_intro()
 
 uploaded_file = st.sidebar.file_uploader(
-    "Escolhe um ficheiro CSV ou Excel",
+    "Upload CSV or Excel file",
     type=["csv", "xlsx"]
 )
 
-st.sidebar.divider()
-st.sidebar.markdown("### Formatos suportados")
-st.sidebar.write("CSV")
-st.sidebar.write("Excel (.xlsx)")
+render_sidebar_details()
 
 # Se o utilizador carregar um ficheiro
 if uploaded_file is not None:
     try:
         if uploaded_file.name.endswith(".xlsx"):
             sheet_names = get_excel_sheets(uploaded_file)
-            selected_sheet = st.sidebar.selectbox("Escolhe uma folha", sheet_names)
+            selected_sheet = st.sidebar.selectbox("Select worksheet", sheet_names)
             df = load_file(uploaded_file, sheet_name=selected_sheet)
         else:
             df = load_file(uploaded_file)
-        st.success("Ficheiro carregado com sucesso!")
+        st.sidebar.success("File loaded successfully.")
 
         overview = get_dataset_overview(df)
-        st.subheader("Resumo geral")
-
         kpis = generate_dataset_kpis(df)
 
-        col1, col2, col3, col4, col5 = st.columns(5)
+        render_kpi_overview(overview, kpis)
 
-        col1.metric("Linhas", overview["num_linhas"])
-
-        col2.metric("Colunas", overview["num_colunas"])
-
-        col3.metric(
-            "Valores em falta",
-            kpis["total_missing"]
-        )
-
-        col4.metric(
-            "Duplicados",
-            kpis["duplicated_rows"]
-        )
-
-        col5.metric(
-            "Colunas com outliers",
-            kpis["outlier_columns"]
-        )
-
-        st.subheader("Resumo executivo")
+        st.divider()
 
         executive_summary = generate_executive_summary(df)
-
-        for item in executive_summary:
-            st.info(item)
+        render_executive_summary(executive_summary)
 
         tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-        "Pré-visualização",
-        "Estatísticas",
-        "Qualidade dos dados",
-        "Alertas",
-        "Gráficos e insights",
-        "Inteligência das colunas"
-    ])
-        with tab1:
-            st.subheader("Pré-visualização dos dados")
-            st.dataframe(df.head())
+            "📄 Data Preview",
+            "📈 Statistics",
+            "🧭 Data Quality",
+            "🚦 Alerts",
+            "📊 Visual Insights",
+            "🧠 Column Intelligence"
+        ])
 
-            st.subheader("Tipos de dados")
-            st.write(df.dtypes)
+        with tab1:
+            st.subheader("Data Preview")
+            st.caption("First rows of the uploaded dataset for a fast structural check.")
+            st.dataframe(df.head(), use_container_width=True)
+
+            st.subheader("Data Types")
+            st.caption("Detected column types used by the analysis and chart recommendations.")
+            st.dataframe(
+                df.dtypes.astype(str).rename("Data type"),
+                use_container_width=True
+            )
         
         with tab2:
-            st.subheader("Estatísticas numéricas")
+            st.subheader("Numeric Statistics")
+            st.caption("Descriptive statistics for numeric columns, including central tendency and spread.")
             numeric_statistics = get_numeric_statistics(df)
 
             if numeric_statistics is not None:
-                st.dataframe(numeric_statistics)
+                st.dataframe(numeric_statistics, use_container_width=True)
             else:
-                st.info("Não existem colunas numéricas para apresentar estatísticas.")
+                st.info("No numeric columns are available for statistical profiling.")
 
         with tab3:
-                st.subheader("Qualidade dos dados")
+            st.subheader("Data Quality")
+            st.caption("Column-level completeness, uniqueness and potential quality issues.")
 
-                quality_table = create_data_quality_table(df)
+            quality_table = create_data_quality_table(df)
 
-                st.dataframe(
-                    quality_table,
-                    use_container_width=True,
-                    hide_index=True
-                )
+            st.dataframe(
+                quality_table,
+                use_container_width=True,
+                hide_index=True
+            )
 
-                duplicated_info = get_duplicated_rows(df)
+            duplicated_info = get_duplicated_rows(df)
 
-                st.write(
-                    f"Linhas envolvidas em duplicados: "
-                    f"{duplicated_info['total_linhas_duplicadas']}"
-                )
+            dup_col1, dup_col2 = st.columns(2)
 
-                st.write(
-                    f"Registos duplicados encontrados: "
-                    f"{duplicated_info['registos_duplicados']}"
-                )
+            dup_col1.metric(
+                "Rows involved in duplicates",
+                duplicated_info['total_linhas_duplicadas']
+            )
+
+            dup_col2.metric(
+                "Duplicate records found",
+                duplicated_info['registos_duplicados']
+            )
         
         with tab4:
-            st.subheader("Alertas")
+            st.subheader("Quality Alerts")
+            st.caption("Severity-based checks highlighting the most relevant data quality concerns.")
 
             alerts = generate_data_quality_alerts(df)
 
@@ -142,12 +129,13 @@ if uploaded_file is not None:
                         st.info(alert["message"])
 
             else:
-                st.success("Não foram detetados problemas relevantes na qualidade dos dados.")
+                st.success("No relevant data quality issues were detected.")
         with tab5:
-            st.subheader("Visualização por coluna")
+            st.subheader("Column Visualization")
+            st.caption("Select a column to receive the recommended chart and an automated insight.")
 
             selected_column = st.selectbox(
-                "Escolhe uma coluna para visualizar",
+                "Select column",
                 df.columns
             )
 
@@ -159,15 +147,15 @@ if uploaded_file is not None:
 
                 if recommendation["chart_type"] == "numeric":
 
-                    st.write("Histograma")
+                    st.markdown("#### Distribution")
                     fig = create_histogram(df, selected_column)
                     st.pyplot(fig)
 
-                    st.write("Boxplot")
+                    st.markdown("#### Outlier View")
                     boxplot_fig = create_boxplot(df, selected_column)
                     st.pyplot(boxplot_fig)
 
-                    st.subheader("Insight automático")
+                    st.subheader("Automated Insight")
                     st.info(generate_numeric_insight(df, selected_column))
 
                 elif recommendation["chart_type"] == "categorical":
@@ -175,12 +163,13 @@ if uploaded_file is not None:
                     fig = create_bar_chart(df, selected_column)
                     st.pyplot(fig)
 
-                    st.subheader("Insight automático")
+                    st.subheader("Automated Insight")
                     st.info(generate_categorical_insight(df, selected_column))
 
             st.divider()
 
-            st.subheader("Correlação entre variáveis numéricas")
+            st.subheader("Correlation Between Numeric Variables")
+            st.caption("Correlation heatmap and plain-language findings for numeric relationships.")
 
             numeric_columns = df.select_dtypes(include="number").columns
 
@@ -188,7 +177,7 @@ if uploaded_file is not None:
                 heatmap_fig = create_correlation_heatmap(df)
                 st.pyplot(heatmap_fig)
 
-                st.subheader("Insights de correlação")
+                st.subheader("Correlation Insights")
 
                 correlation_insights = generate_correlation_insights(df)
 
@@ -196,32 +185,22 @@ if uploaded_file is not None:
                     st.info(insight)
 
             else:
-                st.info("O dataset precisa de pelo menos 2 colunas numéricas para calcular correlação.")
+                st.info("The dataset needs at least 2 numeric columns to calculate correlation.")
 
         with tab6:
+            st.subheader("Column Intelligence")
+            st.caption("A practical profile of each column, including analytical role and visualization guidance.")
 
-                st.subheader("Inteligência das colunas")
+            profile_table = create_column_profile_table(df)
 
-                profile_table = create_column_profile_table(df)
-
-                st.dataframe(
-                    profile_table,
-                    use_container_width=True,
-                    hide_index=True
-                )
+            st.dataframe(
+                profile_table,
+                use_container_width=True,
+                hide_index=True
+            )
                 
     except Exception as e:
-        st.error(f"Erro ao carregar ficheiro: {e}")
+        st.error(f"Error loading file: {e}")
     
 else:
-    st.info("Carrega um ficheiro CSV ou Excel na barra lateral para iniciar a análise.")
-
-    st.markdown("""
-    ### O que o M.A.I.A. faz
-
-    - Analisa automaticamente datasets CSV e Excel
-    - Deteta valores em falta, zeros, duplicados e possíveis outliers
-    - Gera estatísticas, gráficos e insights automáticos
-    - Avalia a qualidade dos dados
-    - Recomenda visualizações adequadas para cada coluna
-    """)
+    render_empty_state()
