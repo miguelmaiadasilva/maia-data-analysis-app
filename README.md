@@ -1,42 +1,42 @@
 # M.A.I.A. — Miguel Artificial Intelligence Analyst
 
-M.A.I.A. é uma aplicação de análise exploratória de dados desenvolvida em Python e Streamlit.  
-O objetivo do projeto é permitir o carregamento de ficheiros CSV ou Excel e gerar automaticamente uma análise inicial do dataset, incluindo qualidade dos dados, estatísticas, visualizações e insights em linguagem natural.
+M.A.I.A. is an exploratory data analysis application built with Python and Streamlit.  
+The goal of the project is to allow users to upload CSV or Excel files and automatically generate an initial analysis of the dataset, including data quality checks, statistics, visualizations and natural-language insights.
 
-## Objetivo do projeto
+## Project Objective
 
-Este projeto foi desenvolvido como parte do meu percurso de transição para a área de Data Analysis, com foco em:
+This project was developed as part of my transition into the Data Analysis field, with a focus on:
 
-- análise exploratória de dados;
-- qualidade dos dados;
-- visualização de dados;
-- interpretação automática de padrões;
-- desenvolvimento de aplicações simples com Python.
+- exploratory data analysis;
+- data quality assessment;
+- data visualization;
+- automatic pattern interpretation;
+- development of simple data applications with Python.
 
-## Funcionalidades principais
+## Main Features
 
-- Upload de ficheiros CSV e Excel
-- Suporte a ficheiros Excel com múltiplas folhas
-- Deteção automática de separadores em CSV
-- Fallback de encoding para leitura de ficheiros
-- Validação inicial do dataset
-- Resumo executivo automático
-- KPIs principais do dataset
-- Estatísticas numéricas
-- Deteção de valores em falta
-- Deteção de valores zero
-- Deteção de linhas duplicadas
-- Alertas com níveis de gravidade
-- Histogramas
+- CSV and Excel file upload
+- Support for Excel files with multiple sheets
+- Automatic CSV separator detection
+- Encoding fallback for robust file reading
+- Initial dataset validation
+- Automatic executive summary
+- Main dataset KPIs
+- Numerical statistics
+- Missing values detection
+- Zero values detection
+- Duplicate row detection
+- Data quality alerts with severity levels
+- Histograms
 - Boxplots
-- Gráficos de barras
-- Heatmap de correlação
-- Insights automáticos por coluna
-- Insights automáticos de correlação
-- Análise inteligente das colunas
-- Recomendação automática de visualizações
+- Bar charts
+- Correlation heatmap
+- Automatic insights by column
+- Automatic correlation insights
+- Smart column profiling
+- Automatic visualization recommendations
 
-## Tecnologias utilizadas
+## Technologies Used
 
 - Python
 - pandas
@@ -44,25 +44,26 @@ Este projeto foi desenvolvido como parte do meu percurso de transição para a �
 - matplotlib
 - seaborn
 - openpyxl
- ## Screenshots
 
-### Página inicial
+## Screenshots
 
-![Página inicial](assets/intro.png)
+### Landing Page
 
-### Resumo executivo
+![Landing Page](assets/intro.png)
 
-![Resumo executivo](assets/sum.png)
+### Executive Summary
 
-### Gráficos e insights
+![Executive Summary](assets/sum.png)
 
-![Gráfico 1](assets/gra.png)
+### Charts and Insights
 
-![Gráfico 2](assets/grafico1.png)
+![Chart 1](assets/gra.png)
 
-![Gráfico 3](assets/grafico2.png)
+![Chart 2](assets/grafico1.png)
 
-## Estrutura do projeto
+![Chart 3](assets/grafico2.png)
+
+## Project Structure
 
 ```text
 M.A.I.A/
@@ -78,10 +79,9 @@ M.A.I.A/
 │   ├── data_quality.py
 │   ├── charts.py
 │   ├── insights.py
-│   └── column_intelligence.py
+│   ├── column_intelligence.py
+│   └── ui_components.py
 │
 ├── data/
 ├── assets/
 └── reports/
-
-
